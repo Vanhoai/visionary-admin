@@ -68,6 +68,7 @@ const router = createRouter({
     context: { queryClient },
     defaultPreload: "intent",
     defaultPreloadStaleTime: 0,
+    basepath: "/visionary-admin",
 })
 
 // Register the router instance for type safety
