@@ -9,11 +9,11 @@ import { Main } from "@/components/layout/main"
 import { LearnMore } from "@/components/learn-more"
 import { Search } from "@/components/search"
 import { ThemeSwitch } from "@/components/theme-switch"
-import { UsersDialogs } from "@/features/users/components/users-dialogs"
-import { UsersPrimaryButtons } from "@/features/users/components/users-primary-buttons"
-import { UsersProvider } from "@/features/users/components/users-provider"
-import { UsersTable } from "@/features/users/components/users-table"
-import { users } from "@/features/users/data/users"
+import { UsersDialogs } from "@/features/blogs/components/users-dialogs"
+import { UsersPrimaryButtons } from "@/features/blogs/components/users-primary-buttons"
+import { UsersProvider } from "@/features/blogs/components/users-provider"
+import { UsersTable } from "@/features/blogs/components/users-table"
+import { users } from "@/features/blogs/data/users"
 
 export const Route = createFileRoute("/clerk/_authenticated/user-management")({
     component: UserManagement,
@@ -60,7 +60,7 @@ function UserManagement() {
                                         <p>
                                             This is the same as{" "}
                                             <Link
-                                                to="/users"
+                                                to="/blogs"
                                                 className="text-blue-500 underline decoration-dashed underline-offset-2"
                                             >
                                                 '/users'
@@ -126,7 +126,7 @@ function Unauthorized() {
                             <p>
                                 This is the same as{" "}
                                 <Link
-                                    to="/users"
+                                    to="/blogs"
                                     className="text-blue-500 underline decoration-dashed underline-offset-2"
                                 >
                                     '/users'

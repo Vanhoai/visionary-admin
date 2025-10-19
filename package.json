@@ -10,7 +10,9 @@
         "preview": "vite preview",
         "format:check": "prettier --check .",
         "format": "prettier --write .",
-        "knip": "knip"
+        "knip": "knip",
+        "predeploy": "npm run build",
+        "deploy": "gh-pages -d dist"
     },
     "dependencies": {
         "@clerk/clerk-react": "^5.51.0",
@@ -42,6 +44,7 @@
         "clsx": "^2.1.1",
         "cmdk": "1.1.1",
         "date-fns": "^4.1.0",
+        "gh-pages": "^6.3.0",
         "input-otp": "^1.4.2",
         "lucide-react": "^0.545.0",
         "react": "^19.2.0",
