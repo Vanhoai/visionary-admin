@@ -1,6 +1,7 @@
 import type { Option } from "@/core"
 import { create } from "zustand"
-import { persist } from "zustand/middleware"
+import { createJSONStorage, persist } from "zustand/middleware"
+import { createEncryptedStorage } from "./encrypted_zutand.store"
 
 interface AuthStore {
     // State
@@ -12,6 +13,7 @@ interface AuthStore {
     setAuthenticated: (isAuthenticated: boolean) => void
     setAccessToken: (token: Option<string>) => void
     setRefreshToken: (token: Option<string>) => void
+    authSuccess: (accessToken: string, refreshToken: string) => void
 }
 
 export const useAuthStore = create<AuthStore>()(
@@ -23,9 +25,16 @@ export const useAuthStore = create<AuthStore>()(
             setAuthenticated: (isAuthenticated) => set({ isAuthenticated }),
             setAccessToken: (token) => set({ accessToken: token }),
             setRefreshToken: (token) => set({ refreshToken: token }),
+            authSuccess: (accessToken, refreshToken) =>
+                set({
+                    isAuthenticated: true,
+                    accessToken: accessToken,
+                    refreshToken: refreshToken,
+                }),
         }),
         {
             name: "auth-storage",
+            storage: createJSONStorage(() => createEncryptedStorage("auth-encrypted")),
             partialize: (state) => ({
                 isAuthenticated: state.isAuthenticated,
                 accessToken: state.accessToken,

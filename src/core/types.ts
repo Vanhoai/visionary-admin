@@ -1,5 +1,7 @@
 export type Option<T> = T | null | undefined
+
 export type Nullable<T> = T | null
+
 export class Either<L, R> {
     private data: L | R
     private isLeft: boolean
