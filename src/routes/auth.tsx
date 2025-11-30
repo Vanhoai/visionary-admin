@@ -34,8 +34,8 @@ const SignInPage: React.FC = () => {
     const { authSuccess } = useAuthStore()
 
     const [mode, setMode] = React.useState<AuthMode>(AuthMode.BEGIN)
-    const [email, setEmail] = React.useState<string>("hinsun.studio@gmail.com")
-    const [password, setPassword] = React.useState<string>("vanhoai.adv123")
+    const [email, setEmail] = React.useState<string>("")
+    const [password, setPassword] = React.useState<string>("")
     const [isLoading, setIsLoading] = React.useState<boolean>(false)
 
     const labelButton = React.useMemo(() => {
