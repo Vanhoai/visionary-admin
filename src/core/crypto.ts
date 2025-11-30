@@ -2,7 +2,6 @@ export interface Cryptography {
     deriveKey(password: string, salt: Uint8Array): Promise<CryptoKey>
     encrypt(data: string): Promise<string>
     decrypt(encryptedData: string): Promise<string>
-    getDeviceKey(): string
 }
 
 export class CryptographyImpl implements Cryptography {
@@ -106,13 +105,11 @@ export class CryptographyImpl implements Cryptography {
         // Hash
         let hash = 0
         for (let i = 0; i < fingerprint.length; i++) {
-            const char = fingerprint.charCodeAt(i)
-            hash = (hash << 5) - hash + char
-            hash = hash & hash // Convert to 32bit integer
+            const chr = fingerprint.charCodeAt(i)
+            hash = (hash << 5) - hash + chr
+            hash = hash & hash
         }
 
-        const key = `@visionary-${Math.abs(hash).toString(36)}`
-        console.log({ key })
-        return key
+        return `device-key-${hash}`
     }
 }

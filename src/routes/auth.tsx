@@ -2,7 +2,7 @@ import * as React from "react"
 import { toast } from "sonner"
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
 
-import { isFailure } from "@/core"
+import { FailureCodes, isFailure, OAUTH2_STATE_KEY } from "@/core"
 import {
     Button,
     Card,
@@ -19,7 +19,7 @@ import {
     Spinner,
 } from "@/presentation/components"
 import { useAuthStore } from "@/presentation/store"
-import { accountService, authService } from "@/presentation/di"
+import { accountService, authService, encryptedStorage } from "@/presentation/di"
 
 const AuthMode = {
     BEGIN: "BEGIN",
@@ -52,18 +52,23 @@ const SignInPage: React.FC = () => {
     const checkEmailExists = async () => {
         setIsLoading(true)
         const emailExist = await accountService.findAccountWithEmail(email)
+        setIsLoading(false)
+
         if (isFailure(emailExist)) {
-            setIsLoading(false)
-            setMode(AuthMode.SIGN_UP)
-            toast.info("Email not found, please enter password to sign up.")
+            if (emailExist.code === FailureCodes.NotFound) {
+                setMode(AuthMode.SIGN_UP)
+                toast.success("No Account Found", {
+                    description: "Please create an account to continue.",
+                })
+                return
+            }
+
+            toast.info(emailExist.message)
             return
         }
 
         setMode(AuthMode.SIGN_IN)
-        setIsLoading(false)
-        toast.success("Found Account", {
-            description: "Please enter password to sign in.",
-        })
+        toast.success("Please enter password to sign in 🐳")
     }
 
     const signIn = async () => {
@@ -71,22 +76,18 @@ const SignInPage: React.FC = () => {
         const signInResult = await authService.signInWithEmail({ email, password })
         if (isFailure(signInResult)) {
             setIsLoading(false)
-            toast.error("Sign In Failed", {
-                description: signInResult.message,
-            })
-
+            toast.error(signInResult.message)
             return
         }
 
         setIsLoading(false)
         authSuccess(signInResult.accessToken, signInResult.refreshToken)
-        navigate({ to: "/dashboard" })
+        setTimeout(() => {
+            navigate({ to: "/dashboard" })
+        }, 1000)
     }
 
-    const signUp = async () => {
-        setIsLoading(true)
-        setIsLoading(false)
-    }
+    const signUp = async () => {}
 
     const submit = () => {
         switch (mode) {
@@ -100,6 +101,27 @@ const SignInPage: React.FC = () => {
                 signUp()
                 break
         }
+    }
+
+    const signInGoogle = async () => {
+        setIsLoading(true)
+        const oauthResponse = await authService.oauth2Google()
+        setIsLoading(false)
+
+        if (isFailure(oauthResponse)) {
+            toast.error(oauthResponse.message)
+            return
+        }
+
+        await encryptedStorage.setItem(OAUTH2_STATE_KEY, oauthResponse.state)
+        window.location.href = oauthResponse.authorizationUrl
+    }
+
+    const signInGithub = async () => {
+        setIsLoading(true)
+        await new Promise((resolve) => setTimeout(resolve, 1000)) // Simulate network delay
+        toast.success("Feature comming soon 🫣")
+        setIsLoading(false)
     }
 
     return (
@@ -168,12 +190,12 @@ const SignInPage: React.FC = () => {
 
                     <Separator className="my-4" />
 
-                    <Button variant="outline" className="w-full h-11 mb-3 cursor-pointer">
+                    <Button variant="outline" className="w-full h-11 mb-3 cursor-pointer" onClick={signInGoogle}>
                         <GoogleIcon />
                         Login with Google
                     </Button>
 
-                    <Button variant="outline" className="w-full h-11 p-0 cursor-pointer">
+                    <Button variant="outline" className="w-full h-11 p-0 cursor-pointer" onClick={signInGithub}>
                         <GithubIcon />
                         Login with Github
                     </Button>

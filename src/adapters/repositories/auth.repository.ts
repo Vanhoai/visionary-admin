@@ -24,6 +24,34 @@ export class AuthRepository extends BaseRepository implements IAuthRepository {
         })
     }
 
+    oauth2GoogleCallback(code: string, state: string): Promise<AuthResponse | Failure> {
+        return super.safe(async () => {
+            const response = await this.api.post<AuthResponse>({
+                endpoint: `${this.BASE_AUTH_URL}/oauth2/google-callback`,
+                body: {
+                    code: code,
+                    state: state,
+                },
+            })
+
+            return response
+        })
+    }
+
+    oauth2GitHubCallback(code: string, state: string): Promise<AuthResponse | Failure> {
+        return super.safe(async () => {
+            const response = await this.api.post<AuthResponse>({
+                endpoint: `${this.BASE_AUTH_URL}/oauth2/github-callback`,
+                body: {
+                    code: code,
+                    state: state,
+                },
+            })
+
+            return response
+        })
+    }
+
     signInWithEmail(email: string, password: string): Promise<AuthResponse | Failure> {
         return super.safe(async () => {
             const response = await this.api.post<AuthResponse>({

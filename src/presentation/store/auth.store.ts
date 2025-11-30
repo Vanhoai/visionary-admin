@@ -1,7 +1,10 @@
-import type { Option } from "@/core"
 import { create } from "zustand"
 import { createJSONStorage, persist } from "zustand/middleware"
+
+import { ACCESS_TOKEN_KEY, IS_AUTHENTICATED_KEY, REFRESH_TOKEN_KEY, type Option } from "@/core"
+
 import { createEncryptedStorage } from "./encrypted_zutand.store"
+import { encryptedStorage } from "../di"
 
 interface AuthStore {
     // State
@@ -10,10 +13,8 @@ interface AuthStore {
     refreshToken: Option<string>
 
     // Actions
-    setAuthenticated: (isAuthenticated: boolean) => void
-    setAccessToken: (token: Option<string>) => void
-    setRefreshToken: (token: Option<string>) => void
-    authSuccess: (accessToken: string, refreshToken: string) => void
+    authSuccess: (accessToken: string, refreshToken: string) => Promise<void>
+    resetAuth: () => void
 }
 
 export const useAuthStore = create<AuthStore>()(
@@ -22,15 +23,28 @@ export const useAuthStore = create<AuthStore>()(
             isAuthenticated: false,
             accessToken: null,
             refreshToken: null,
-            setAuthenticated: (isAuthenticated) => set({ isAuthenticated }),
-            setAccessToken: (token) => set({ accessToken: token }),
-            setRefreshToken: (token) => set({ refreshToken: token }),
-            authSuccess: (accessToken, refreshToken) =>
+            authSuccess: async (accessToken, refreshToken) => {
+                await encryptedStorage.setItem(IS_AUTHENTICATED_KEY, "true")
+                await encryptedStorage.setItem(ACCESS_TOKEN_KEY, accessToken)
+                await encryptedStorage.setItem(REFRESH_TOKEN_KEY, refreshToken)
+
                 set({
                     isAuthenticated: true,
                     accessToken: accessToken,
                     refreshToken: refreshToken,
-                }),
+                })
+            },
+            resetAuth: () => {
+                encryptedStorage.removeItem(IS_AUTHENTICATED_KEY)
+                encryptedStorage.removeItem(ACCESS_TOKEN_KEY)
+                encryptedStorage.removeItem(REFRESH_TOKEN_KEY)
+
+                set({
+                    isAuthenticated: false,
+                    accessToken: null,
+                    refreshToken: null,
+                })
+            },
         }),
         {
             name: "auth-storage",

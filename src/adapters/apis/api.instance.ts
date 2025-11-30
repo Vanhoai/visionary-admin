@@ -106,7 +106,6 @@ export class ApiService {
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}))
                 const message = errorData?.message ? errorData.message : "API request failed"
-
                 const code = errorData?.code ? errorData.code : response.status.toString()
 
                 throw new Failure(code, message)
@@ -114,21 +113,18 @@ export class ApiService {
 
             const httpResponse = (await response.json()) as HttpResponse<T>
             return httpResponse.payload as T
-        } catch (error) {
+        } catch (exception) {
             clearTimeout(timeoutId)
 
             // Ensure all errors are wrapped in Failure
-            if (error instanceof Failure) {
-                throw error
-            } else if (error instanceof Error) {
-                if (error.name === "AbortError") {
-                    throw new Failure(FailureCodes.TimeoutError, "Request timed out")
-                }
+            if (exception instanceof Failure) throw exception
 
-                throw new Failure(FailureCodes.NetworkError, error.message || "Network error occurred")
-            } else {
-                throw new Failure(FailureCodes.UnknownFailure, "An unknown error occurred")
+            if (exception instanceof Error) {
+                if (exception.name === "AbortError") throw new Failure(FailureCodes.TimeoutError, "Request timed out")
+                throw new Failure(FailureCodes.NetworkError, exception.message || "Network error occurred")
             }
+
+            throw new Failure(FailureCodes.UnknownFailure, "An unknown error occurred")
         }
     }
 

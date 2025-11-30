@@ -3,11 +3,7 @@ import { createRootRoute, Outlet } from "@tanstack/react-router"
 import { TanStackRouterDevtools } from "@tanstack/router-devtools"
 import { Toaster } from "@/presentation/components"
 
-export const Route = createRootRoute({
-    component: RootComponent,
-})
-
-function RootComponent() {
+const RootComponent: React.FC = () => {
     return (
         <React.Fragment>
             <Outlet />
@@ -16,3 +12,7 @@ function RootComponent() {
         </React.Fragment>
     )
 }
+
+export const Route = createRootRoute({
+    component: RootComponent,
+})
