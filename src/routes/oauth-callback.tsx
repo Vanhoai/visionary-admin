@@ -1,10 +1,11 @@
 import * as React from "react"
-import { createFileRoute, useNavigate } from "@tanstack/react-router"
-import { useAuthStore } from "@/presentation/store"
-import { Spinner } from "@/presentation/components"
 import { toast } from "sonner"
-import { authService, encryptedStorage } from "@/presentation/di"
+import { createFileRoute, useNavigate } from "@tanstack/react-router"
+
 import { isFailure, OAUTH2_STATE_KEY } from "@/core"
+import { Spinner } from "@/presentation/components"
+import { useAuthStore } from "@/presentation/store"
+import { authService, encryptedStorage } from "@/presentation/di"
 
 const AuthCallback: React.FC = () => {
     const navigate = useNavigate()

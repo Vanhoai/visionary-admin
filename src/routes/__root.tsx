@@ -1,14 +1,16 @@
 import * as React from "react"
 import { createRootRoute, Outlet } from "@tanstack/react-router"
 import { TanStackRouterDevtools } from "@tanstack/router-devtools"
-import { Toaster } from "@/presentation/components"
+import { NavigationProgress, Toaster } from "@/presentation/components"
 
 const RootComponent: React.FC = () => {
     return (
         <React.Fragment>
+            <NavigationProgress />
             <Outlet />
+            <Toaster duration={5000} />
+
             {import.meta.env.DEV && <TanStackRouterDevtools position="bottom-right" />}
-            <Toaster position="top-right" richColors />
         </React.Fragment>
     )
 }

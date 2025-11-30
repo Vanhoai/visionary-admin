@@ -15,6 +15,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard/index'
 import { Route as AuthenticatedBlogsIndexRouteImport } from './routes/_authenticated/blogs/index'
+import { Route as AuthenticatedAccountsIndexRouteImport } from './routes/_authenticated/accounts/index'
 
 const OauthCallbackRoute = OauthCallbackRouteImport.update({
   id: '/oauth-callback',
@@ -46,11 +47,18 @@ const AuthenticatedBlogsIndexRoute = AuthenticatedBlogsIndexRouteImport.update({
   path: '/blogs/',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedAccountsIndexRoute =
+  AuthenticatedAccountsIndexRouteImport.update({
+    id: '/accounts/',
+    path: '/accounts/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/oauth-callback': typeof OauthCallbackRoute
+  '/accounts': typeof AuthenticatedAccountsIndexRoute
   '/blogs': typeof AuthenticatedBlogsIndexRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
 }
@@ -58,6 +66,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/oauth-callback': typeof OauthCallbackRoute
+  '/accounts': typeof AuthenticatedAccountsIndexRoute
   '/blogs': typeof AuthenticatedBlogsIndexRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
 }
@@ -67,20 +76,28 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/oauth-callback': typeof OauthCallbackRoute
+  '/_authenticated/accounts/': typeof AuthenticatedAccountsIndexRoute
   '/_authenticated/blogs/': typeof AuthenticatedBlogsIndexRoute
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/oauth-callback' | '/blogs' | '/dashboard'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/oauth-callback'
+    | '/accounts'
+    | '/blogs'
+    | '/dashboard'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/oauth-callback' | '/blogs' | '/dashboard'
+  to: '/' | '/auth' | '/oauth-callback' | '/accounts' | '/blogs' | '/dashboard'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
     | '/oauth-callback'
+    | '/_authenticated/accounts/'
     | '/_authenticated/blogs/'
     | '/_authenticated/dashboard/'
   fileRoutesById: FileRoutesById
@@ -136,15 +153,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedBlogsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/accounts/': {
+      id: '/_authenticated/accounts/'
+      path: '/accounts'
+      fullPath: '/accounts'
+      preLoaderRoute: typeof AuthenticatedAccountsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAccountsIndexRoute: typeof AuthenticatedAccountsIndexRoute
   AuthenticatedBlogsIndexRoute: typeof AuthenticatedBlogsIndexRoute
   AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAccountsIndexRoute: AuthenticatedAccountsIndexRoute,
   AuthenticatedBlogsIndexRoute: AuthenticatedBlogsIndexRoute,
   AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,
 }

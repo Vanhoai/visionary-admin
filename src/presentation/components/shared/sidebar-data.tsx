@@ -1,6 +1,6 @@
 import { type SidebarData } from "./types"
 import { HugeiconsIcon } from "@hugeicons/react"
-import { GridViewIcon, CommandIcon, DocumentCodeIcon } from "@hugeicons/core-free-icons"
+import { GridViewIcon, CommandIcon, DocumentCodeIcon, UserSquareIcon } from "@hugeicons/core-free-icons"
 
 export const sidebarData: SidebarData = {
     user: {
@@ -28,6 +28,11 @@ export const sidebarData: SidebarData = {
                     title: "Dashboard",
                     url: "/dashboard",
                     icon: <HugeiconsIcon icon={GridViewIcon} />,
+                },
+                {
+                    title: "Accounts",
+                    url: "/accounts",
+                    icon: <HugeiconsIcon icon={UserSquareIcon} />,
                 },
                 {
                     title: "Blogs",

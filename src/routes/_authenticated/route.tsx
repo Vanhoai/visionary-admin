@@ -1,3 +1,4 @@
+import * as React from "react"
 import { IS_AUTHENTICATED_KEY } from "@/core"
 import { AppSideBar, SidebarInset, SidebarProvider } from "@/presentation/components"
 import { LayoutProvider, SearchProvider } from "@/presentation/contexts"
@@ -5,19 +6,11 @@ import { encryptedStorage } from "@/presentation/di"
 import { cn, getCookie } from "@/presentation/lib"
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router"
 
-export const Route = createFileRoute("/_authenticated")({
-    beforeLoad: async () => {
-        const isAuthenticated = (await encryptedStorage.getItem(IS_AUTHENTICATED_KEY)) === "true"
-        if (!isAuthenticated) throw redirect({ to: "/auth" })
-    },
-    component: AuthenticatedLayout,
-})
-
-type AuthenticatedLayoutProps = {
+interface AuthenticatedLayoutProps {
     children?: React.ReactNode
 }
 
-function AuthenticatedLayout({ children }: AuthenticatedLayoutProps) {
+const AuthenticatedLayout: React.FC<AuthenticatedLayoutProps> = ({ children }) => {
     const defaultOpen = getCookie("sidebar_state") !== "false"
 
     return (
@@ -46,3 +39,11 @@ function AuthenticatedLayout({ children }: AuthenticatedLayoutProps) {
         </SearchProvider>
     )
 }
+
+export const Route = createFileRoute("/_authenticated")({
+    beforeLoad: async () => {
+        const isAuthenticated = (await encryptedStorage.getItem(IS_AUTHENTICATED_KEY)) === "true"
+        if (!isAuthenticated) throw redirect({ to: "/auth" })
+    },
+    component: AuthenticatedLayout,
+})
