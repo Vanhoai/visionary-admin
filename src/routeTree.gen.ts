@@ -13,9 +13,14 @@ import { Route as OauthCallbackRouteImport } from './routes/oauth-callback'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedProjectsIndexRouteImport } from './routes/_authenticated/projects/index'
+import { Route as AuthenticatedExperiencesIndexRouteImport } from './routes/_authenticated/experiences/index'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard/index'
 import { Route as AuthenticatedBlogsIndexRouteImport } from './routes/_authenticated/blogs/index'
 import { Route as AuthenticatedAccountsIndexRouteImport } from './routes/_authenticated/accounts/index'
+import { Route as AuthenticatedSettingsNotificationsRouteImport } from './routes/_authenticated/settings/notifications'
+import { Route as AuthenticatedSettingsDisplayRouteImport } from './routes/_authenticated/settings/display'
+import { Route as AuthenticatedSettingsAppearanceRouteImport } from './routes/_authenticated/settings/appearance'
 
 const OauthCallbackRoute = OauthCallbackRouteImport.update({
   id: '/oauth-callback',
@@ -36,6 +41,18 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedProjectsIndexRoute =
+  AuthenticatedProjectsIndexRouteImport.update({
+    id: '/projects/',
+    path: '/projects/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedExperiencesIndexRoute =
+  AuthenticatedExperiencesIndexRouteImport.update({
+    id: '/experiences/',
+    path: '/experiences/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedDashboardIndexRoute =
   AuthenticatedDashboardIndexRouteImport.update({
     id: '/dashboard/',
@@ -53,22 +70,50 @@ const AuthenticatedAccountsIndexRoute =
     path: '/accounts/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedSettingsNotificationsRoute =
+  AuthenticatedSettingsNotificationsRouteImport.update({
+    id: '/settings/notifications',
+    path: '/settings/notifications',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedSettingsDisplayRoute =
+  AuthenticatedSettingsDisplayRouteImport.update({
+    id: '/settings/display',
+    path: '/settings/display',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedSettingsAppearanceRoute =
+  AuthenticatedSettingsAppearanceRouteImport.update({
+    id: '/settings/appearance',
+    path: '/settings/appearance',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/oauth-callback': typeof OauthCallbackRoute
+  '/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
+  '/settings/display': typeof AuthenticatedSettingsDisplayRoute
+  '/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
   '/accounts': typeof AuthenticatedAccountsIndexRoute
   '/blogs': typeof AuthenticatedBlogsIndexRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
+  '/experiences': typeof AuthenticatedExperiencesIndexRoute
+  '/projects': typeof AuthenticatedProjectsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/oauth-callback': typeof OauthCallbackRoute
+  '/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
+  '/settings/display': typeof AuthenticatedSettingsDisplayRoute
+  '/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
   '/accounts': typeof AuthenticatedAccountsIndexRoute
   '/blogs': typeof AuthenticatedBlogsIndexRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
+  '/experiences': typeof AuthenticatedExperiencesIndexRoute
+  '/projects': typeof AuthenticatedProjectsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -76,9 +121,14 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/oauth-callback': typeof OauthCallbackRoute
+  '/_authenticated/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
+  '/_authenticated/settings/display': typeof AuthenticatedSettingsDisplayRoute
+  '/_authenticated/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
   '/_authenticated/accounts/': typeof AuthenticatedAccountsIndexRoute
   '/_authenticated/blogs/': typeof AuthenticatedBlogsIndexRoute
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
+  '/_authenticated/experiences/': typeof AuthenticatedExperiencesIndexRoute
+  '/_authenticated/projects/': typeof AuthenticatedProjectsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -86,20 +136,41 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/oauth-callback'
+    | '/settings/appearance'
+    | '/settings/display'
+    | '/settings/notifications'
     | '/accounts'
     | '/blogs'
     | '/dashboard'
+    | '/experiences'
+    | '/projects'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/oauth-callback' | '/accounts' | '/blogs' | '/dashboard'
+  to:
+    | '/'
+    | '/auth'
+    | '/oauth-callback'
+    | '/settings/appearance'
+    | '/settings/display'
+    | '/settings/notifications'
+    | '/accounts'
+    | '/blogs'
+    | '/dashboard'
+    | '/experiences'
+    | '/projects'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
     | '/oauth-callback'
+    | '/_authenticated/settings/appearance'
+    | '/_authenticated/settings/display'
+    | '/_authenticated/settings/notifications'
     | '/_authenticated/accounts/'
     | '/_authenticated/blogs/'
     | '/_authenticated/dashboard/'
+    | '/_authenticated/experiences/'
+    | '/_authenticated/projects/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -139,6 +210,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/projects/': {
+      id: '/_authenticated/projects/'
+      path: '/projects'
+      fullPath: '/projects'
+      preLoaderRoute: typeof AuthenticatedProjectsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/experiences/': {
+      id: '/_authenticated/experiences/'
+      path: '/experiences'
+      fullPath: '/experiences'
+      preLoaderRoute: typeof AuthenticatedExperiencesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/dashboard/': {
       id: '/_authenticated/dashboard/'
       path: '/dashboard'
@@ -160,19 +245,51 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAccountsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/settings/notifications': {
+      id: '/_authenticated/settings/notifications'
+      path: '/settings/notifications'
+      fullPath: '/settings/notifications'
+      preLoaderRoute: typeof AuthenticatedSettingsNotificationsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/settings/display': {
+      id: '/_authenticated/settings/display'
+      path: '/settings/display'
+      fullPath: '/settings/display'
+      preLoaderRoute: typeof AuthenticatedSettingsDisplayRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/settings/appearance': {
+      id: '/_authenticated/settings/appearance'
+      path: '/settings/appearance'
+      fullPath: '/settings/appearance'
+      preLoaderRoute: typeof AuthenticatedSettingsAppearanceRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedSettingsAppearanceRoute: typeof AuthenticatedSettingsAppearanceRoute
+  AuthenticatedSettingsDisplayRoute: typeof AuthenticatedSettingsDisplayRoute
+  AuthenticatedSettingsNotificationsRoute: typeof AuthenticatedSettingsNotificationsRoute
   AuthenticatedAccountsIndexRoute: typeof AuthenticatedAccountsIndexRoute
   AuthenticatedBlogsIndexRoute: typeof AuthenticatedBlogsIndexRoute
   AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute
+  AuthenticatedExperiencesIndexRoute: typeof AuthenticatedExperiencesIndexRoute
+  AuthenticatedProjectsIndexRoute: typeof AuthenticatedProjectsIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedSettingsAppearanceRoute: AuthenticatedSettingsAppearanceRoute,
+  AuthenticatedSettingsDisplayRoute: AuthenticatedSettingsDisplayRoute,
+  AuthenticatedSettingsNotificationsRoute:
+    AuthenticatedSettingsNotificationsRoute,
   AuthenticatedAccountsIndexRoute: AuthenticatedAccountsIndexRoute,
   AuthenticatedBlogsIndexRoute: AuthenticatedBlogsIndexRoute,
   AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,
+  AuthenticatedExperiencesIndexRoute: AuthenticatedExperiencesIndexRoute,
+  AuthenticatedProjectsIndexRoute: AuthenticatedProjectsIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

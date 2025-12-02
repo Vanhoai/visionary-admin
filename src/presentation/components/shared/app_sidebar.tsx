@@ -1,6 +1,7 @@
 import * as React from "react"
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from "../ui"
 import { useLayout } from "@/presentation/contexts"
+
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from "../ui"
 import { sidebarData } from "./sidebar-data"
 import { NavGroup } from "./nav-group"
 import { TeamSwitcher } from "./team-switcher"

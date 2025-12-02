@@ -1,6 +1,15 @@
 import { type SidebarData } from "./types"
-import { HugeiconsIcon } from "@hugeicons/react"
-import { GridViewIcon, CommandIcon, DocumentCodeIcon, UserSquareIcon } from "@hugeicons/core-free-icons"
+import {
+    DashboardIcon,
+    ReaderIcon,
+    ArchiveIcon,
+    CardStackMinusIcon,
+    PersonIcon,
+    CubeIcon,
+    DesktopIcon,
+    Half2Icon,
+    CopyIcon,
+} from "@radix-ui/react-icons"
 
 export const sidebarData: SidebarData = {
     user: {
@@ -11,12 +20,12 @@ export const sidebarData: SidebarData = {
     teams: [
         {
             name: "Visionary Admin",
-            logo: <HugeiconsIcon icon={CommandIcon} />,
-            plan: "Startup",
+            logo: <ArchiveIcon />,
+            plan: "Hinsun",
         },
         {
             name: "Hinsun LLC",
-            logo: <HugeiconsIcon icon={CommandIcon} />,
+            logo: <ArchiveIcon />,
             plan: "Enterprise",
         },
     ],
@@ -27,17 +36,47 @@ export const sidebarData: SidebarData = {
                 {
                     title: "Dashboard",
                     url: "/dashboard",
-                    icon: <HugeiconsIcon icon={GridViewIcon} />,
+                    icon: <DashboardIcon />,
                 },
                 {
                     title: "Accounts",
                     url: "/accounts",
-                    icon: <HugeiconsIcon icon={UserSquareIcon} />,
+                    icon: <PersonIcon />,
                 },
                 {
                     title: "Blogs",
                     url: "/blogs",
-                    icon: <HugeiconsIcon icon={DocumentCodeIcon} />,
+                    icon: <ReaderIcon />,
+                },
+                {
+                    title: "Experiences",
+                    url: "/experiences",
+                    icon: <CardStackMinusIcon />,
+                },
+                {
+                    title: "Projects",
+                    url: "/projects",
+                    icon: <CubeIcon />,
+                },
+            ],
+        },
+        {
+            title: "Settings",
+            items: [
+                {
+                    title: "Appearance",
+                    url: "/settings/appearance",
+                    icon: <Half2Icon />,
+                },
+                {
+                    title: "Notifications",
+                    url: "/settings/notifications",
+                    icon: <CopyIcon />,
+                },
+                {
+                    title: "Display",
+                    url: "/settings/display",
+                    icon: <DesktopIcon />,
                 },
             ],
         },

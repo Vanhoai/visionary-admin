@@ -1,10 +1,11 @@
 import * as React from "react"
-import { IS_AUTHENTICATED_KEY } from "@/core"
-import { AppSideBar, SidebarInset, SidebarProvider } from "@/presentation/components"
-import { LayoutProvider, SearchProvider } from "@/presentation/contexts"
-import { encryptedStorage } from "@/presentation/di"
-import { cn, getCookie } from "@/presentation/lib"
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router"
+
+import { IS_AUTHENTICATED_KEY } from "@/core"
+import { cn, getCookie } from "@/presentation/lib"
+import { encryptedStorage } from "@/presentation/di"
+import { LayoutProvider, SearchProvider } from "@/presentation/contexts"
+import { AppSideBar, SidebarInset, SidebarProvider } from "@/presentation/components"
 
 interface AuthenticatedLayoutProps {
     children?: React.ReactNode

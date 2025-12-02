@@ -8,7 +8,7 @@ const RootComponent: React.FC = () => {
         <React.Fragment>
             <NavigationProgress />
             <Outlet />
-            <Toaster duration={5000} />
+            <Toaster duration={5000} position="top-center" />
 
             {import.meta.env.DEV && <TanStackRouterDevtools position="bottom-right" />}
         </React.Fragment>
