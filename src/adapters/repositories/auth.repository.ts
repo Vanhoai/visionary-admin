@@ -79,4 +79,14 @@ export class AuthRepository extends BaseRepository implements IAuthRepository {
             return response
         })
     }
+
+    signOut(): Promise<boolean | Failure> {
+        return super.safe(async () => {
+            await this.api.post<null>({
+                endpoint: `${this.BASE_AUTH_URL}/sign-out`,
+            })
+
+            return true
+        })
+    }
 }

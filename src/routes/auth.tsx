@@ -57,13 +57,11 @@ const SignInPage: React.FC = () => {
         if (isFailure(emailExist)) {
             if (emailExist.code === FailureCodes.NotFound) {
                 setMode(AuthMode.SIGN_UP)
-                toast.success("No Account Found", {
-                    description: "Please create an account to continue.",
-                })
+                toast.success("Email not found. Please proceed to sign up 🐳")
                 return
             }
 
-            toast.info(emailExist.message)
+            toast.success(emailExist.message)
             return
         }
 
@@ -87,7 +85,19 @@ const SignInPage: React.FC = () => {
         }, 1000)
     }
 
-    const signUp = async () => {}
+    const signUp = async () => {
+        setIsLoading(true)
+        const signUpResult = await authService.signUpWithEmail({ email, password })
+        if (isFailure(signUpResult)) {
+            setIsLoading(false)
+            toast.error(signUpResult.message)
+            return
+        }
+
+        setIsLoading(false)
+        toast.success("Account created successfully! Please sign in 🐳")
+        setMode(AuthMode.SIGN_IN)
+    }
 
     const submit = () => {
         switch (mode) {
@@ -190,12 +200,22 @@ const SignInPage: React.FC = () => {
 
                     <Separator className="my-4" />
 
-                    <Button variant="outline" className="w-full h-11 mb-3 cursor-pointer" onClick={signInGoogle}>
+                    <Button
+                        disabled
+                        variant="outline"
+                        className="w-full h-11 mb-3 cursor-pointer"
+                        onClick={signInGoogle}
+                    >
                         <GoogleIcon />
                         Login with Google
                     </Button>
 
-                    <Button variant="outline" className="w-full h-11 p-0 cursor-pointer" onClick={signInGithub}>
+                    <Button
+                        disabled
+                        variant="outline"
+                        className="w-full h-11 p-0 cursor-pointer"
+                        onClick={signInGithub}
+                    >
                         <GithubIcon />
                         Login with Github
                     </Button>

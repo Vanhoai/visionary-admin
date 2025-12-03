@@ -4,7 +4,7 @@ import { Checkbox } from "@/presentation/components"
 import { BadgeIndexed, DataTableColumnHeader } from "@/presentation/components"
 
 import { type Experience } from "../data/schema"
-import { ExperienceRowActions } from "./experience_row_actions"
+import { ExperienceRowActions } from "./row_actions"
 
 export const experiencesColumns: ColumnDef<Experience>[] = [
     {

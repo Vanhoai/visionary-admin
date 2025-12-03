@@ -8,4 +8,5 @@ export interface IAuthRepository {
     oauth2GitHubCallback(code: string, state: string): Promise<AuthResponse | Failure>
     signInWithEmail(email: string, password: string): Promise<AuthResponse | Failure>
     signUpWithEmail(email: string, password: string): Promise<AccountEntity | Failure>
+    signOut(): Promise<boolean | Failure>
 }

@@ -34,4 +34,5 @@ export interface AuthUseCases {
     oauth2GitHubCallback(params: OAuth2GitHubCallbackParams): Promise<AuthResponse | Failure>
     signInWithEmail(params: AuthWithEmailParams): Promise<AuthResponse | Failure>
     signUpWithEmail(params: AuthWithEmailParams): Promise<AccountEntity | Failure>
+    signOut(): Promise<boolean | Failure>
 }

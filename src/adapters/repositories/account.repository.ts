@@ -25,4 +25,12 @@ export class AccountRepository extends BaseRepository implements IAccountReposit
             params: { id: id },
         })
     }
+
+    findCurrentAccount(): Promise<AccountEntity | Failure> {
+        return super.safe(() => {
+            return this.api.get<AccountEntity>({
+                endpoint: `${this.BASE_ACCOUNT_URL}/find-profile`,
+            })
+        })
+    }
 }

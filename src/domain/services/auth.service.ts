@@ -34,10 +34,10 @@ export class AuthService implements AuthUseCases {
     }
 
     async signInWithEmail(params: AuthWithEmailParams): Promise<AuthResponse | Failure> {
-        if (isEmptyString(params.email)) return new Failure(FailureCodes.ValidationError, "Email cannot be empty")
-        if (!isValidEmail(params.email)) return new Failure(FailureCodes.ValidationError, "Email is not valid")
+        if (isEmptyString(params.email)) return new Failure(FailureCodes.ValidationError, "Email cannot be empty 🙄")
+        if (!isValidEmail(params.email)) return new Failure(FailureCodes.ValidationError, "Email is not valid 🙄")
 
-        if (!isValidPassword(params.password))
+        if (isEmptyString(params.password) || !isValidPassword(params.password))
             return new Failure(
                 FailureCodes.ValidationError,
                 "Password must be at least 8 characters, including uppercase, lowercase, number, and special character",
@@ -46,7 +46,20 @@ export class AuthService implements AuthUseCases {
         return await this.authRepository.signInWithEmail(params.email, params.password)
     }
 
-    signUpWithEmail(params: AuthWithEmailParams): Promise<AccountEntity | Failure> {
-        return this.authRepository.signUpWithEmail(params.email, params.password)
+    async signUpWithEmail(params: AuthWithEmailParams): Promise<AccountEntity | Failure> {
+        if (isEmptyString(params.email)) return new Failure(FailureCodes.ValidationError, "Email cannot be empty 🙄")
+        if (!isValidEmail(params.email)) return new Failure(FailureCodes.ValidationError, "Email is not valid 🙄")
+
+        if (isEmptyString(params.password) || !isValidPassword(params.password))
+            return new Failure(
+                FailureCodes.ValidationError,
+                "Password must be at least 8 characters, including uppercase, lowercase, number, and special character",
+            )
+
+        return await this.authRepository.signUpWithEmail(params.email, params.password)
+    }
+
+    signOut(): Promise<boolean | Failure> {
+        return this.authRepository.signOut()
     }
 }

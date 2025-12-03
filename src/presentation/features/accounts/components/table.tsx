@@ -11,22 +11,31 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table"
-import { cn } from "@/presentation/lib/utils"
+
+import { cn } from "@/presentation/lib"
 import { type NavigateFn, useTableUrlState } from "@/presentation/hooks"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/presentation/components/ui/table"
-import { DataTablePagination, DataTableToolbar } from "@/presentation/components"
-import { roles } from "../data/data"
-import { type User } from "../data/schema"
-import { DataTableBulkActions } from "./data-table-bulk-actions"
-import { usersColumns as columns } from "./users-columns"
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+    DataTablePagination,
+    DataTableToolbar,
+} from "@/presentation/components"
+
+import { accountsColumns as columns } from "./columns"
+import { type Account } from "../data/schema"
+import { AccountsBulkActions } from "./bulk_actions"
 
 type DataTableProps = {
-    data: User[]
+    data: Account[]
     search: Record<string, unknown>
     navigate: NavigateFn
 }
 
-export function UsersTable({ data, search, navigate }: DataTableProps) {
+export function AccountsTable({ data, search, navigate }: DataTableProps) {
     // Local UI-only states
     const [rowSelection, setRowSelection] = useState({})
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
@@ -43,12 +52,7 @@ export function UsersTable({ data, search, navigate }: DataTableProps) {
             navigate,
             pagination: { defaultPage: 1, defaultPageSize: 10 },
             globalFilter: { enabled: false },
-            columnFilters: [
-                // username per-column text filter
-                { columnId: "username", searchKey: "username", type: "string" },
-                { columnId: "status", searchKey: "status", type: "array" },
-                { columnId: "role", searchKey: "role", type: "array" },
-            ],
+            columnFilters: [],
         })
 
     // eslint-disable-next-line react-hooks/incompatible-library
@@ -87,28 +91,7 @@ export function UsersTable({ data, search, navigate }: DataTableProps) {
                 "flex flex-1 flex-col gap-4",
             )}
         >
-            <DataTableToolbar
-                table={table}
-                searchPlaceholder="Filter users..."
-                searchKey="username"
-                filters={[
-                    {
-                        columnId: "status",
-                        title: "Status",
-                        options: [
-                            { label: "Active", value: "active" },
-                            { label: "Inactive", value: "inactive" },
-                            { label: "Invited", value: "invited" },
-                            { label: "Suspended", value: "suspended" },
-                        ],
-                    },
-                    {
-                        columnId: "role",
-                        title: "Role",
-                        options: roles.map((role) => ({ ...role })),
-                    },
-                ]}
-            />
+            <DataTableToolbar table={table} searchPlaceholder="Filter accounts" searchKey="username" filters={[]} />
             <div className="overflow-hidden rounded-md border">
                 <Table>
                     <TableHeader>
@@ -167,7 +150,7 @@ export function UsersTable({ data, search, navigate }: DataTableProps) {
                 </Table>
             </div>
             <DataTablePagination table={table} className="mt-auto" />
-            <DataTableBulkActions table={table} />
+            <AccountsBulkActions table={table} />
         </div>
     )
 }

@@ -1,6 +1,7 @@
 import { useNavigate, useLocation } from "@tanstack/react-router"
 import { ConfirmDialog } from "@/presentation/components"
 import { useAuthStore } from "@/presentation/store"
+import { authService } from "@/presentation/di"
 
 interface SignOutDialogProps {
     open: boolean
@@ -12,7 +13,9 @@ export function SignOutDialog({ open, onOpenChange }: SignOutDialogProps) {
     const location = useLocation()
     const { resetAuth } = useAuthStore()
 
-    const handleSignOut = () => {
+    const handleSignOut = async () => {
+        await authService.signOut()
+
         resetAuth()
         const currentPath = location.href
         navigate({

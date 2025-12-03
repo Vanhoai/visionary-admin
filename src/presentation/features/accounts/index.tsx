@@ -1,11 +1,13 @@
 import * as React from "react"
-import { Header, Main, ProfileDropdown, Search, ThemeSwitch } from "@/presentation/components"
-import { UsersProvider } from "./components/users-provider"
-import { UsersPrimaryButtons } from "./components/users-primary-buttons"
-import { UsersTable } from "./components/users-table"
-import { users } from "./data/accounts"
 import { getRouteApi } from "@tanstack/react-router"
+
+import { Header, Main, ProfileDropdown, Search, ThemeSwitch } from "@/presentation/components"
+
+import { users } from "./data/accounts"
+import { AccountsTable } from "./components/table"
 import { UsersDialogs } from "./components/users-dialogs"
+import { UsersProvider } from "./components/users-provider"
+import { AccountsPrimaryButtons } from "./components/primary_buttons"
 
 const route = getRouteApi("/_authenticated/accounts/")
 
@@ -26,13 +28,15 @@ export const AccountsFeature: React.FC = () => {
             <Main className="flex flex-1 flex-col gap-4 sm:gap-6">
                 <div className="flex flex-wrap items-end justify-between gap-2">
                     <div>
-                        <h2 className="text-2xl font-bold tracking-tight">User List</h2>
-                        <p className="text-muted-foreground">Manage your users and their roles here.</p>
+                        <h2 className="text-2xl font-bold tracking-tight">Accounts</h2>
+                        <p className="text-muted-foreground">
+                            Manage your application's accounts and their permissions.
+                        </p>
                     </div>
 
-                    <UsersPrimaryButtons />
+                    <AccountsPrimaryButtons />
                 </div>
-                <UsersTable data={users} search={search} navigate={navigate} />
+                <AccountsTable data={users} search={search} navigate={navigate} />
             </Main>
 
             <UsersDialogs />

@@ -10,10 +10,14 @@ export class AccountService implements ManageAccountUseCase {
     }
 
     async findAccountWithEmail(email: string): Promise<Option<AccountEntity> | Failure> {
-        if (isEmptyString(email)) return new Failure(FailureCodes.ValidationError, "Email cannot be empty")
-        if (!isValidEmail(email)) return new Failure(FailureCodes.ValidationError, "Email format is invalid")
+        if (isEmptyString(email)) return new Failure(FailureCodes.ValidationError, "Email cannot be empty 🫣")
+        if (!isValidEmail(email)) return new Failure(FailureCodes.ValidationError, "Email format is invalid 🫣")
 
         const response = await this.accountRepository.findAccountWithEmail(email)
         return response
+    }
+
+    findCurrentAccount(): Promise<AccountEntity | Failure> {
+        return this.accountRepository.findCurrentAccount()
     }
 }
