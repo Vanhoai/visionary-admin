@@ -5,6 +5,7 @@ export class BaseRepository {
     protected readonly api: ApiService
     protected BASE_AUTH_URL = "/auth"
     protected BASE_ACCOUNT_URL = "/accounts"
+    protected BASE_EXPERIENCE_URL = "/globals/experiences"
 
     constructor(api: ApiService) {
         this.api = api

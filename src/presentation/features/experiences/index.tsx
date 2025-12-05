@@ -2,11 +2,15 @@ import * as React from "react"
 
 import { Header, Main, ProfileDropdown, Search, ThemeSwitch } from "@/presentation/components"
 
-import { experiences } from "./data/experiences"
 import { ExperiencesTable } from "./components/table"
 import { ExperiencesPrimaryButtons } from "./components/primary_buttons"
+import { useExperiences } from "./hooks"
+import { fromEntitiesToSchemas } from "./data/schema"
 
 export const ExperiencesFeature: React.FC = () => {
+    const { data: experiences, isLoading, error } = useExperiences()
+    console.log({ experiences, isLoading, error })
+
     return (
         <React.Fragment>
             <Header fixed>
@@ -25,7 +29,7 @@ export const ExperiencesFeature: React.FC = () => {
                     <ExperiencesPrimaryButtons />
                 </div>
 
-                <ExperiencesTable data={experiences} />
+                <ExperiencesTable data={fromEntitiesToSchemas(experiences || [])} />
             </Main>
         </React.Fragment>
     )
